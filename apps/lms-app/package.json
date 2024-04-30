@@ -1,0 +1,32 @@
+{
+  "name": "lms-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "lint-staged": "pnpm typecheck && pnpm lint && pnpm eslint --report-unused-disable-directives --max-warnings 0",
+    "lint-staged-prettier": "prettier --check"
+  },
+  "dependencies": {
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "lint-staged": "^15.2.2",
+    "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "pnpm lint-staged",
+    "*.{html,css,json,md,ts,tsx}": "pnpm lint-staged-prettier"
+  }
+}
