@@ -1,6 +1,7 @@
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
-import { ThemeProvider } from '@mui/material'
-import { theme } from './theme/theme'
+import { Box, ThemeProvider } from '@mui/material'
+import { theme } from '../theme/theme'
+import Navbar from './_components/Navbar'
 
 export default function RootLayout({
   children,
@@ -11,7 +12,17 @@ export default function RootLayout({
     <html lang="en">
       <AppRouterCacheProvider>
         <ThemeProvider theme={theme}>
-          <body>{children}</body>
+          <body>
+            <Navbar />
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              mt={3}
+            >
+              {children}
+            </Box>
+          </body>
         </ThemeProvider>
       </AppRouterCacheProvider>
     </html>
