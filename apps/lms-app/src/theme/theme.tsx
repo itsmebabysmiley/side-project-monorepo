@@ -14,7 +14,7 @@ export const theme = createTheme({
       xl: 1440,
     },
   },
-  typography: {},
+  typography: { button: { textTransform: 'none' } },
   palette: {
     primary: {
       main: '#3f51b5', // a calm, professional blue
