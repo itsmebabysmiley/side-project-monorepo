@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { FormInput } from '@/components/form/formInput'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormInputPassword } from '@/components/form/formInputPassword'
+import { useSearchParams } from 'next/navigation'
 import CheckBox from '../../../../components/Checkbox'
 import Button from '../../../../components/Button'
 
@@ -22,8 +23,12 @@ const LoginSchema = z.object({
 })
 
 export default function Page() {
+  const searchParams = useSearchParams()
   const { control } = useForm<LoginData>({
-    defaultValues: defaultLoginValues,
+    defaultValues: {
+      username: searchParams.get('email') ?? '',
+      password: '',
+    },
     resolver: zodResolver(LoginSchema),
   })
 
@@ -33,6 +38,7 @@ export default function Page() {
         <Typography variant="h3" align="center">
           Login
         </Typography>
+
         <FormInput
           control={control}
           name={'username'}
@@ -48,7 +54,7 @@ export default function Page() {
           type="password"
           required
         />
-        <CheckBox label="Remember me" />
+        <CheckBox label="Remember me" checked={false} />
         <Divider>
           <Typography variant="caption">OR</Typography>
         </Divider>
