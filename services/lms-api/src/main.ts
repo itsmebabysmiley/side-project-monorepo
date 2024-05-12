@@ -1,12 +1,24 @@
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
-import { ClassSerializerInterceptor } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  ValidationError,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AppModule } from './app.module';
 import { swaggerConfig } from './swagger/swagger';
 import { AllExceptionsFilter } from './exceptions/all-exception';
+import { BadRequestWithValidationException } from './exceptions/bad-request-validation.exception';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      exceptionFactory: (validationErrors: ValidationError[] = []) => {
+        return new BadRequestWithValidationException(validationErrors);
+      },
+    }),
+  );
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector), {
       excludeExtraneousValues: true,

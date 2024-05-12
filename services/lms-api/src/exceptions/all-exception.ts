@@ -4,16 +4,31 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
+import { BadRequestWithValidationException } from './bad-request-validation.exception';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
+  private readonly logger = new Logger(AllExceptionsFilter.name);
+
   catch(exception: unknown, host: ArgumentsHost): void {
-    // In certain situations `httpAdapter` might not be available in the
-    // constructor method, thus we should resolve it here.
+    let validationMessages = [];
+    if (exception instanceof Error) {
+      this.logger.error(exception, exception.stack);
+    }
+    if (exception instanceof BadRequestWithValidationException) {
+      validationMessages = exception.errors.map((error) => {
+        return {
+          field: error.property,
+          constraints: error.constraints,
+        };
+      });
+    }
+
     const { httpAdapter } = this.httpAdapterHost;
 
     const ctx = host.switchToHttp();
@@ -28,6 +43,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
       stack: exception instanceof Error ? exception.stack : null,
+      messages: validationMessages,
     };
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
