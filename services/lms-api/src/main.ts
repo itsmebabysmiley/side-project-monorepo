@@ -29,6 +29,8 @@ async function bootstrap() {
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
 
+  app.enableCors({});
+
   swaggerConfig(app);
   await app.listen(process.env.PORT || 3000);
   // eslint-disable-next-line no-console
