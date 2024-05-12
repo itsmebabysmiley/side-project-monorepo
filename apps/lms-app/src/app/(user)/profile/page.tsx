@@ -1,6 +1,6 @@
 import { Avatar, Paper, Stack, Typography } from '@mui/material'
 
-export default function Page() {
+export default async function Page() {
   return (
     <Paper>
       <Stack spacing={2} p={2}>
