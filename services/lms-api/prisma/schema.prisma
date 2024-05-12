@@ -10,13 +10,17 @@ datasource db {
 model User {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email     String   @unique
+  password  String
   firstName String
   lastName  String
   phone     String
   gender    Gender?
   countryCode String
+  dob       DateTime
   createdAt DateTime @default(now())
   createdBy String?
+  updatedAt DateTime @updatedAt
+  updatedBy String?
 }
 
 enum Gender {
