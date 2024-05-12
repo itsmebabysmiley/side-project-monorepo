@@ -1,5 +1,9 @@
 module.exports = {
-  extends: ['../../.eslintrc.js', 'next/core-web-vitals'],
+  extends: [
+    '../../.eslintrc.js',
+    'next/core-web-vitals',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
+  ],
   parserOptions: {
     project: './tsconfig.json',
   },
